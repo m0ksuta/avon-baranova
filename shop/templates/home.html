@@ -1,7 +1,43 @@
 {% extends 'base.html' %}
 
-{% block title %}home{% endblock %}
+{% load static %}
+
+{% block title %}Главная{% endblock %}
 
 {% block content %}
-	
+	<div class="row">
+		<div class="col-sm-12 col-md-6 col-lg-6 text-center pt-3 pb-5 border-end border-bottom border-secondary">
+			<h1 class="header_main py-3">Актуальное</h1>
+			<img src="{% static 'images/avon_sales.jpg' %}">
+		</div>
+		<div class="col-sm-12 col-md-6 col-lg-6 text-center pt-5 border-start border-bottom border-secondary">
+			<h1 class="header_main my-5 pt-5">Baranova TV</h1>
+			<p class="paragraph_main fs-4">Меня зовут Ольга, и я занимаюсь продажей продукции Avon.</p>
+		</div>
+	</div>
+	<div class="row">
+		<h1 class="text-uppercase header_main col-sm-12 col-md-8 col-lg-8 text-center mx-auto py-3">
+			Почему стоит зарегистрироваться прямо сейчас?
+		</h1>
+	</div>
+	<div class="container text-center">
+		{% for i in '123' %}
+
+			<div class="row mx-auto">
+				<div class="m-4 bg-white">
+					<p class="paragraph_main fs-4">
+						При регистрации в этом каталоге и размещении заказа на сумму 999руб вы получите скидку 30%.
+					</p>
+				</div>
+			</div>
+
+		{% endfor %}
+	</div>
+		<div class="row text-center border-bottom border-secondary pb-5">
+			<div class="container text-center mx-auto">
+				<img src="{% static 'images/product_main_page.png' %}" class="image_mainpage" style="max-width: 90%;">
+			</div>
+		</div>
+
+
 {% endblock %}

@@ -1,0 +1,27 @@
+body{
+	background-color: #ecd5ce;
+}
+.navigation_bar{
+	background-color: #434343;
+	color: #E5C7BD !important;
+}
+.navigation_bar_item{
+	background-color: #434343;
+	color: #E5C7BD !important;
+}
+.navigation_bar_item:hover{
+	background-color: #4c4c4c;
+}
+.header_main{
+    letter-spacing: 0.1em;
+    font-style: normal;
+    font-weight: 370;
+    color: #212121;
+}
+.paragraph_main{
+    letter-spacing: 0.1em;
+    font-style: normal;
+    font-weight: 370;
+    color: #212121;
+}
+
