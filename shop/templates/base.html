@@ -11,10 +11,54 @@
 
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
+    <style type="text/css">
+    	.my_link{
+    		text-decoration: none;
+    	}
+    	.category_links{
+		    text-decoration: none;
+		    color:#000;
+		}
+		.category_links:hover{
+		    background-color: #7b7270 !important;
+		}
+		.card_text{
+			background: transparent;
+			border-color: transparent;
+		}
+		.card_text p{
+			color: #434343;
+			letter-spacing: 0.04em;
+
+		}
+		.card_text h5{
+			color: #434343;
+			text-transform: uppercase;
+			letter-spacing: 0.04em;
+		}
+    </style>
 </head>
 <body>
 
-	{% include 'navbar.html' %}
+	
+<nav class="navbar navbar-expand-md navigation_bar">
+  <div class="container">
+        <button class="navbar-toggler m-2 border-dark" data-bs-toggle="collapse" data-bs-target="#navbar">click</button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbar">
+            <ul class="navbar-nav nav-fill w-100">
+                <li class="nav-item">
+                    {% block nav1 %}{% endblock %}
+                </li>
+                <li class="nav-item">
+                    {% block nav2 %}{% endblock %}
+                </li>
+                <li class="nav-item">
+                    {% block nav3 %}{% endblock %}
+                </li>
+            </ul>
+        </div>
+  </div>
+</nav>
 
 	{% block content %}
 	{% endblock %}

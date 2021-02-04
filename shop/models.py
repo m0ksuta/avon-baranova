@@ -15,6 +15,17 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Actual(models.Model):
-    pass
+    name = models.CharField(max_length=250, unique=True, default='')
+    image = models.ImageField(blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Paragraph(models.Model):
+    text = models.TextField()
