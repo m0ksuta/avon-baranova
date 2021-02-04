@@ -20,10 +20,10 @@
 		<div class="text-center my-5 mx-2" style="background-color: #746B68;">
 			<h1 class="header_main">Категории</h1>
 			<div class="row">
-				{% for i in '123456789' %}
+				{% for category in categories %}
 					<a class="col-lg-4 col-md-12 col-sm-12 text-uppercase" style="text-decoration: none;" href="">
 						<p class="category_links p-3" style="letter-spacing: 0.04em;">
-							для лица
+							{{category.name}}
 						</p>
 					</a>
 					
@@ -31,23 +31,23 @@
 			</div>
 		</div>
 		<div class="row">
-			{% for product in 'products' %}
+			{% for product in products %}
             <div class="col-sm-6 mx-auto mx-auto col-md-4 col-lg-4">
                 <div class="card mb-4">
                     <div class="p-4">
                         <a href="#">
-                            <img class="card-img-top" src="{% static 'images/product.png' %}" alt="">
+                            <img class="card-img-top" src="{{product.image.url}}" alt="">
                         </a>
 
                     </div>  
                 </div>
                 <div class="card-footer text-center card_text" style="">
                         <p class="mb-0">
-                            Product.name
+                            {{product.name}}
                         </p>
                         <br>
                         <h5 class="mb-0">
-                            product.price руб
+                            {{product.price}} руб
                         </h5>
                         <br><br>
                 </div>

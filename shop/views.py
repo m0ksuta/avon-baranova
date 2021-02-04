@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 
-from .models import Actual, Paragraph
+from .models import Actual, Paragraph, Product, Category
 
 # from ..static.media import actual_images
 # Create your views here.
@@ -13,4 +13,6 @@ def home(request):
 
 
 def catalogue(request):
-    return render(request, 'catalogue.html')
+    products = Product.objects.all()
+    categories = Category.objects.all()
+    return render(request, 'catalogue.html', {'products': products, 'categories': categories})
