@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block nav1 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="#">отзывы</a>
+{% endblock %}
+{% block nav2 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{{'/'}}">главная</a>
+{% endblock %}
+{% block nav3 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="#">связаться для заказа</a>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="col-sm-6 mx-auto mx-auto col-md-4 col-lg-4 m-4">
+    <div class="card mb-4">
+        <div class="p-4">
+        	<img class="card-img-top" src="{{product.image.url}}" alt="{{product.name}}">
+        </div>  
+    </div>
+	<h1 class="text-center mx-auto">{{product.name}}</h1>
+    <div class="card-footer text-center card_text" style="">
+            <p class="mb-0">
+                {{product.description}}
+            </p>
+            <br>
+            <h5 class="mb-0">
+            	{{product.price}} руб
+        	</h5>
+    	<br><br>
+    	{% if product.stock <= 0 %}
+    	<p>нет в наличии</p>
+    	{% else %}
+		<a href="#" class="btn btn-nav" style="text-transform: uppercase; background-color: #746B68; color: #fff">добавить в корзину</a>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}
+
+<!-- TODO: отзывы к товару -->

@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Главная{% endblock %}
+{% block title %}Каталог{% endblock %}
 
 {% block nav1 %}
 	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="#">отзывы</a>
@@ -18,10 +18,15 @@
 
 	<div class="container">
 		<div class="text-center my-5 mx-2" style="background-color: #746B68;">
-			<h1 class="header_main">Категории</h1>
+			
+			<a href="{% url 'catalogue' %}" style="text-decoration: none;">
+				<h1 class="header_main category_heading">
+					Категории
+				</h1>
+			</a>
 			<div class="row">
-				{% for category in categories %}
-					<a class="col-lg-4 col-md-12 col-sm-12 text-uppercase" style="text-decoration: none;" href="">
+				{% for category in links %}
+					<a class="col-lg-4 col-md-12 col-sm-12 text-uppercase" style="text-decoration: none;" href="{{category.get_url}}">
 						<p class="category_links p-3" style="letter-spacing: 0.04em;">
 							{{category.name}}
 						</p>
@@ -35,8 +40,8 @@
             <div class="col-sm-6 mx-auto mx-auto col-md-4 col-lg-4">
                 <div class="card mb-4">
                     <div class="p-4">
-                        <a href="#">
-                            <img class="card-img-top" src="{{product.image.url}}" alt="">
+                        <a href="{{product.get_url}}">
+                            <img class="card-img-top" src="{{product.image.url}}" alt="{{product.name}}">
                         </a>
 
                     </div>  
