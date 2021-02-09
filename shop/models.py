@@ -51,3 +51,19 @@ class Actual(models.Model):
 
 class Paragraph(models.Model):
     text = models.TextField()
+
+
+class User(models.Model):
+    email = models.EmailField()
+    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    father_name = models.CharField(max_length=100)
+    birth_date = models.DateField()
+    living_address = models.CharField(max_length=500)
+    living_index = models.IntegerField()
+    registration_address = models.CharField(max_length=500)
+    registration_index = models.IntegerField()
+    passport_organization = models.CharField(max_length=500)
+    passport_date = models.DateField()
+    passport_series = models.IntegerField()
+    passport_number = models.IntegerField()

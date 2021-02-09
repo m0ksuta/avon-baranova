@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-
+from .forms import UserForm
 from .models import Actual, Paragraph, Product, Category
 
 # Create your views here.
@@ -28,3 +28,13 @@ def product(request, category_slug, product_slug):
     except Exception as e:
         raise e
     return render(request, 'product.html', {'product': product})
+
+
+def sign_up(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            return render(request, 'home.html')
+    else:
+        form = UserForm()
+    return render(request, 'sign_up.html', {'form': form})
