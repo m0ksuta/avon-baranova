@@ -1,7 +1,8 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth import get_user_model
 
-# Create your models here.
+# User = get_user_model()
 
 
 class Category(models.Model):
@@ -52,18 +53,26 @@ class Actual(models.Model):
 class Paragraph(models.Model):
     text = models.TextField()
 
+# def get_sentinel_user():
+#     return get_user_model().objects.get_or_create(username='deleted')[0]
 
-class User(models.Model):
+
+'''class UserModelForm(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
     email = models.EmailField()
     last_name = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     father_name = models.CharField(max_length=100)
-    birth_date = models.DateField()
+    birth_date = models.DateField(default='')
     living_address = models.CharField(max_length=500)
     living_index = models.IntegerField()
     registration_address = models.CharField(max_length=500)
     registration_index = models.IntegerField()
     passport_organization = models.CharField(max_length=500)
-    passport_date = models.DateField()
+    passport_date = models.DateField(default='')
     passport_series = models.IntegerField()
     passport_number = models.IntegerField()
+
+    def __str__(self):
+        return self.username
+'''

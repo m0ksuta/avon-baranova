@@ -1,7 +1,9 @@
-from django.shortcuts import get_object_or_404, render
-from .forms import UserForm
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Actual, Paragraph, Product, Category
-
+from .forms import SignUpForm
+from django.contrib.auth.models import Group, User
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, authenticate, logout
 # Create your views here.
 
 
@@ -32,9 +34,15 @@ def product(request, category_slug, product_slug):
 
 def sign_up(request):
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
-            return render(request, 'home.html')
+            form.save()
+            username = form.cleaned_data.get('username')
+            signup_user = User.objects.get(username=username)
+            user_group = Group.objects.get.all()
+            user_group.user_set.add(signup_user)
+        else:
+            return redirect('home')
     else:
-        form = UserForm()
+        form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
