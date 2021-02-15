@@ -5,13 +5,13 @@
 {% block title %}Каталог{% endblock %}
 
 {% block nav1 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="#">отзывы</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'review' %}">отзывы</a>
 {% endblock %}
 {% block nav2 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{{'/'}}">главная</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'home' %}">главная</a>
 {% endblock %}
 {% block nav3 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="#">связаться для заказа</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'cart' %}">заказать</a>
 {% endblock %}
 
 {% block content %}

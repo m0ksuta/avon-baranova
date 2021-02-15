@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+
+{% block nav1 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'catalogue' %}">каталог</a>
+{% endblock %}
+{% block nav2 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'home' %}">главная</a>
+{% endblock %}
+{% block nav3 %}
+	{% if request.user.is_authenticated and request.user.first_name %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'sign_out' %}">Выйти</a>
+
+	{% else %}
+		<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'login' %}">аккаунт</a>
+
+	{% endif %}
+
+{% endblock %}
+
+<!-- TODO: отзывы -->

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Аккаунт{% endblock %}
+
+{% block nav1 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'review' %}">отзывы</a>
+{% endblock %}
+{% block nav2 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'home' %}">главная</a>
+{% endblock %}
+{% block nav3 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'catalogue' %}">каталог</a>
+{% endblock %}
+
+{% block content %}
+    
+    <div class="container" style="color: #434343;letter-spacing: 0.04em;">
+        <br>
+        <h1 class="product_title text-center mt-3 mb-5">
+            Регистрация & Вход
+        </h1>
+        <div class="row pt-2">
+            <div class="col-12 col-sm-12 col-lg-6 text-center custom_div text-center mx-auto mb-4">
+                <br>
+                <h2 class="product_title text-center">
+                    Новый аккаунт
+                </h2>
+                <br>
+                <a href="{% url 'home' %}" class="btn btn-secondary">
+                    Зарегистрироваться
+                </a>
+            </div>
+            
+            <div class="col-12 col-sm-12 col-lg-6 bg-light text-center mx-auto pb-4" style="box-shadow: 0 0 5px rgba(0,0,0,0.5);
+   }">
+                <div>
+                    <br>
+                    <h2 class="product_title">
+                        Войти
+                    </h2>
+                    <form method="post" class="login_card">
+                        {% csrf_token %}
+                        <p>{{ form | crispy }}</p>
+                        <button type="submit" class="btn btn-secondary">
+                            Войти
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <br>
+    </div>
+
+
+{% endblock %}

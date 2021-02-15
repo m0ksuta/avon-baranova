@@ -1,16 +1,19 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from .models import Actual, Paragraph, Product, Category
-from .forms import SignUpForm
-from django.contrib.auth.models import Group, User
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, authenticate, logout
-# Create your views here.
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from .forms import LoginForm, SignUpForm
+from .models import Actual, Category, Paragraph, Product
 
 
 def home(request):
     actuals = Actual.objects.all()
     paragraph = Paragraph.objects.all()
     return render(request, 'home.html', {'actuals': actuals, 'paragraph': paragraph})
+
+
+def cart(request):
+    return render(request, 'order.html')
 
 
 def catalogue(request, category_slug=None):
@@ -39,10 +42,36 @@ def sign_up(request):
             form.save()
             username = form.cleaned_data.get('username')
             signup_user = User.objects.get(username=username)
-            user_group = Group.objects.get.all()
-            user_group.user_set.add(signup_user)
         else:
             return redirect('home')
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(username=cd['username'], password=cd['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('catalogue')
+                else:
+                    return HttpResponse('Disabled account')
+            else:
+                return redirect('login')
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
+
+
+def sign_out_view(request):
+    logout(request)
+    return redirect('login')
+
+
+def review(request):
+    return render(request, 'review.html')
