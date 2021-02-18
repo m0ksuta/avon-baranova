@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
-
+from django.conf import settings
+from django.utils import timezone
 # User = get_user_model()
 
 
@@ -13,8 +14,8 @@ class Category(models.Model):
 
     class Meta:
         ordering = ('name',)
-        verbose_name = 'category'
-        verbose_name_plural = 'categories'
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
     def get_url(self):
         return reverse('products_by_category', args=[self.slug])
@@ -35,6 +36,11 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default='')
 
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
+
     def get_url(self):
         return reverse('product_detail', args=[self.category.slug, self.slug])
 
@@ -46,6 +52,11 @@ class Actual(models.Model):
     name = models.CharField(max_length=250, unique=True, default='')
     image = models.ImageField(upload_to='actual_images', blank=True)
 
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'Актуальное'
+        verbose_name_plural = 'Актуальные новости'
+
     def __str__(self):
         return self.name
 
@@ -53,26 +64,23 @@ class Actual(models.Model):
 class Paragraph(models.Model):
     text = models.TextField()
 
-# def get_sentinel_user():
-#     return get_user_model().objects.get_or_create(username='deleted')[0]
+    class Meta:
+        ordering = ('text',)
+        verbose_name = 'Текст на главной'
+        verbose_name_plural = 'Текст на главной'
 
 
-'''class UserModelForm(models.Model):
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
-    email = models.EmailField()
-    last_name = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=100)
-    father_name = models.CharField(max_length=100)
-    birth_date = models.DateField(default='')
-    living_address = models.CharField(max_length=500)
-    living_index = models.IntegerField()
-    registration_address = models.CharField(max_length=500)
-    registration_index = models.IntegerField()
-    passport_organization = models.CharField(max_length=500)
-    passport_date = models.DateField(default='')
-    passport_series = models.IntegerField()
-    passport_number = models.IntegerField()
+class Review(models.Model):
+    name = models.CharField(max_length=100)
+    text = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ('-created',)
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
 
     def __str__(self):
-        return self.username
-'''
+        return 'Comment by {}'.format(self.name)

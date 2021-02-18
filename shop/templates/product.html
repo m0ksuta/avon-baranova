@@ -5,13 +5,13 @@
 {% block title %}Каталог{% endblock %}
 
 {% block nav1 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'review' %}">отзывы</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'home' %}">главная</a>
 {% endblock %}
 {% block nav2 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{{'/'}}">главная</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'catalogue' %}">каталог</a>
 {% endblock %}
 {% block nav3 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'connect' %}">заказать</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'cart' %}">заказать</a>
 {% endblock %}
 
 {% block content %}
@@ -36,7 +36,7 @@
     	{% if product.stock <= 0 %}
     	<p>нет в наличии</p>
     	{% else %}
-		<a href="#" class="btn btn-nav" style="text-transform: uppercase; background-color: #746B68; color: #fff">добавить в корзину</a>
+		<a href="#" class="btn btn-nav" style="text-transform: uppercase; background-color: #746B68; color: #fff">добавить к заказу</a>
 		{% endif %}
 	</div>
 </div>

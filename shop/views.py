@@ -2,8 +2,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import LoginForm, SignUpForm
-from .models import Actual, Category, Paragraph, Product
+from .forms import LoginForm, SignUpForm, ReviewForm
+from .models import Actual, Category, Paragraph, Product, Review
+from django.contrib.auth.forms import PasswordResetForm
+
 
 
 def home(request):
@@ -74,4 +76,17 @@ def sign_out_view(request):
 
 
 def review(request):
-    return render(request, 'review.html')
+    comments = Review.objects.all().filter(active=True)
+    if request.method == 'POST':
+        form = ReviewForm(data=request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.save()
+    else:
+        form = ReviewForm()
+    return render(request, 'review.html', {'form': form, 'comments': comments})
+
+
+def password_reset(request):
+    form = PasswordResetForm()
+    return render(request, 'password_reset.html', {'form': form})
