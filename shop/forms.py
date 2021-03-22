@@ -1,37 +1,24 @@
+from datetime import datetime
 from django import forms
-from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Review
-from django.forms.widgets import SelectDateWidget
-from datetime import datetime
+from django.forms import ModelForm
+from .models import Order, Review
 
 
 class SignUpForm(UserCreationForm):
     email = forms.CharField(max_length=250, help_text='example@mail.ru')
-    last_name = forms.CharField(label='Фамилия', max_length=100)
-    first_name = forms.CharField(label='Имя', max_length=100)
-    father_name = forms.CharField(label='Отчество (при наличии)', required=False, max_length=100)
-    widget = forms.DateInput(attrs={'placeholder': '__/__/____', 'class': 'date', })
-    date_range = 100
-    this_year = datetime.now().year
-    birth_date = forms.DateField(label='Дата рождения', widget=SelectDateWidget(years=range(this_year - 18, this_year + 1)))
-    living_address = forms.CharField(label='Адрес места проживания', max_length=500)
-    living_index = forms.IntegerField(label='Индекс места проживания')
-    registration_address = forms.CharField(label='Адрес места прописки', max_length=500)
-    registration_index = forms.IntegerField(label='Индекс места прописки')
-    passport_organization = forms.CharField(label='Кем выдан', max_length=500)
-    passport_date = forms.DateField(label='Дата выдачи',widget=SelectDateWidget(years=range(this_year - 18, this_year + 1)))
-    passport_series = forms.IntegerField(label='Серия паспорта', max_value=9999, min_value=0000)
-    passport_number = forms.IntegerField(label='Номер паспорта', max_value=999999, min_value=000000)
-
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'father_name', 'password1', 'password2', 'email')
+        fields = ('username', 'password1', 'password2', 'email')
         labels = {
             'username': 'имя пользователя',
             'password1': 'пароль',
             'password2': 'повторите пароль',
+        }
+        widgets = {
+            'phone': forms.TextInput(attrs={'placeholder': 'в формате\
+             7*** *** ** **'}),
         }
 
 
@@ -39,8 +26,8 @@ form = SignUpForm()
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label='Имя пользователя')
+    password = forms.CharField(widget=forms.PasswordInput, label='Пароль')
 
 
 class ReviewForm(ModelForm):
@@ -52,6 +39,37 @@ class ReviewForm(ModelForm):
             'text': '',
         }
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'ВВЕДИТЕ ВАШЕ ИМЯ'}),
-            'text': forms.Textarea(attrs={'placeholder': 'НАПИШИТЕ, ПОЖАЛУЙСТА, ОТЗЫВ.'})
+            'name': forms.TextInput(attrs={
+                'placeholder': 'ВВЕДИТЕ ВАШЕ ИМЯ'}),
+            'text': forms.Textarea(attrs={
+                'placeholder': 'НАПИШИТЕ, ПОЖАЛУЙСТА, ОТЗЫВ.'})
         }
+
+
+class OrderForm(ModelForm):
+     class Meta:
+         model = Order
+         fields = '__all__'
+         labels = {
+             'last_name': 'Фамилия',
+             'first_name': 'Имя',
+             'father_name': 'Отчество',
+             'phone': 'Телефон',
+             'birth_date': 'Дата рождения',
+             'living_address': 'Адрес проживания',
+             'living_index': 'Индекс проживания',
+             'registration_address': 'Адрес прописки',
+             'registration_index': 'Индекс прописки',
+             'passport_organization': 'Кем выдан паспорт?',
+             'passport_date': 'Дата выдачи паспорта',
+             'passport_series': 'Серия паспорта',
+             'passport_number': 'Номер паспорта',
+         }
+         this_year = datetime.today().year
+         date_range = 100
+         widgets = {
+             'birth_date': forms.SelectDateWidget(years=range(
+                 this_year - date_range, this_year - 17)),
+             'passport_date': forms.SelectDateWidget(years=range(
+                 this_year - date_range, this_year)),
+         }

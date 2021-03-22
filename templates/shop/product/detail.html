@@ -11,7 +11,7 @@
 	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'catalogue' %}">каталог</a>
 {% endblock %}
 {% block nav3 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'cart' %}">заказать</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'cart_detail' %}">заказать</a>
 {% endblock %}
 
 {% block content %}
@@ -36,7 +36,7 @@
     	{% if product.stock <= 0 %}
     	<p>нет в наличии</p>
     	{% else %}
-		<a href="#" class="btn btn-nav" style="text-transform: uppercase; background-color: #746B68; color: #fff">добавить к заказу</a>
+		<a href="{% if request.user.is_authenticated and request.user.first_name %}{% url 'add_cart' product.id %}{% else %}{% url 'login' %}{% endif %}" class="btn btn-nav" style="text-transform: uppercase; background-color: #746B68; color: #fff">добавить к заказу</a>
 		{% endif %}
 	</div>
 </div>

@@ -5,17 +5,17 @@
 {% block title %}Главная{% endblock %}
 
 {% block nav1 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'review' %}">отзывы</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'shop:review' %}">отзывы</a>
 {% endblock %}
 {% block nav2 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'catalogue' %}">каталог</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'shop:catalogue' %}">каталог</a>
 {% endblock %}
 {% block nav3 %}
 	{% if request.user.is_authenticated and request.user.first_name %}
 	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'sign_out' %}">Выйти</a>
 
 	{% else %}
-		<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'login' %}">аккаунт</a>
+		<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'shop:login' %}">аккаунт</a>
 
 	{% endif %}
 
@@ -23,6 +23,7 @@
 {% endblock %}
 
 {% block content %}
+
 	<div class="row">
 		<div class="col-sm-12 col-md-6 col-lg-6 text-center pt-3 pb-5 border-end border-bottom border-secondary">
 			<h1 class="header_main py-3">Актуальное</h1>
@@ -44,7 +45,7 @@
 	</div>
 	<div class="container text-center">
 		{% for paragraph in paragraph %}
-
+		<div class="container">
 			<div class="row mx-auto">
 				<div class="m-4 bg-white" style="min-height:100px; box-shadow: 0 0 5px rgba(0,0,0,0.5);
    } ">
@@ -53,7 +54,7 @@
 					</p>
 				</div>
 			</div>
-
+		</div>
 		{% endfor %}
 	</div>
 		<div class="row text-center border-bottom border-secondary pb-5">
@@ -61,7 +62,6 @@
 				<img src="{% static 'images/product_main_page.png' %}" class="image_mainpage mt-5" style="max-width: 90%;">
 			</div>
 		</div>
-
 {% include 'footer.html' %}
 
 

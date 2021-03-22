@@ -8,12 +8,12 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="text-center header_main border-bottom border-secondary p-3" style="text-transform: uppercase;">Регистрация</h1>
+<h1 class="text-center header_main border-bottom border-secondary p-3" style="text-transform: uppercase;">Заказать</h1>
 <div class="container form_for_style" style="text-transform: uppercase;">
 	<form method="post" class="col-sm-12 col-md-6 col-lg-6 mx-auto text-center m-3">
 		{% csrf_token %}
 		<p>{{form | crispy}}</p>
-		<input type="submit" value="Зарегистрироваться" class="register_button">
+		<input type="submit" value="Заказать" class="register_button">
 		
 	</form>
 </div>
@@ -22,6 +22,5 @@
     	Отмена
     </a>
 </div>
+{{cart_item.product.name}}
 {% endblock %}
-
-

@@ -5,13 +5,13 @@
 {% block title %}Каталог{% endblock %}
 
 {% block nav1 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'review' %}">отзывы</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'shop:review' %}">отзывы</a>
 {% endblock %}
 {% block nav2 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'home' %}">главная</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'shop:home' %}">главная</a>
 {% endblock %}
 {% block nav3 %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'cart' %}">заказать</a>
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="#">заказать</a>
 {% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@
 	<div class="container">
 		<div class="text-center my-5 mx-2" style="background-color: #746B68;">
 			
-			<a href="{% url 'catalogue' %}" style="text-decoration: none;">
+			<a href="{% url 'shop:catalogue' %}" style="text-decoration: none;">
 				<h1 class="header_main category_heading">
 					Категории
 				</h1>
