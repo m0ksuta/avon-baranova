@@ -1,16 +1,9 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
-from django.conf import settings
-from django.utils import timezone
-# User = get_user_model()
-
 
 class Category(models.Model):
-    name = models.CharField(max_length=250, unique=True)
-    slug = models.SlugField(max_length=250, unique=True)
-    description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='category', blank=True)
+    name = models.CharField(max_length=200, db_index=True)
+    slug = models.SlugField(max_length=200, db_index=True, unique=True)
 
     class Meta:
         ordering = ('name',)
@@ -18,31 +11,32 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
     def get_url(self):
-        return reverse('products_by_category', args=[self.slug])
+        return reverse('shop:product_list_by_category',
+                       args=[self.slug])
 
     def __str__(self):
         return self.name
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=250, unique=True)
-    slug = models.SlugField(max_length=250, unique=True)
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, db_index=True)
+    slug = models.SlugField(max_length=200, db_index=True)
+    image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='product', blank=True)
-    stock = models.IntegerField()
+    stock = models.PositiveIntegerField()
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, default='')
 
     class Meta:
         ordering = ('name',)
-        verbose_name = 'Товар'
-        verbose_name_plural = 'Товары'
+        index_together = (('id', 'slug'),)
 
     def get_url(self):
-        return reverse('product_detail', args=[self.category.slug, self.slug])
+        return reverse('shop:product_detail',
+                       args=[self.id, self.slug])
 
     def __str__(self):
         return self.name
@@ -84,3 +78,54 @@ class Review(models.Model):
 
     def __str__(self):
         return 'Comment by {}'.format(self.name)
+
+
+class Cart(models.Model):
+    cart_id = models.CharField(max_length=250, blank=True)
+    date_added = models.DateField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['date_added']
+        db_table = 'Cart'
+
+    def __str__(self):
+        return self.cart_id
+
+
+class CartItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = 'CartItem'
+
+    def sub_total(self):
+        return self.product.price * self.quantity
+
+    def __str__(self):
+        return self.product
+
+
+class Order(models.Model):
+    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    father_name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=11)
+    date_range = 100
+    birth_date = models.DateField()
+    living_address = models.CharField(max_length=500)
+    living_index = models.CharField(max_length=6)
+    registration_address = models.CharField(max_length=500)
+    registration_index = models.CharField(max_length=6)
+    passport_organization = models.CharField(max_length=500)
+    passport_date = models.DateField()
+    passport_series = models.CharField(max_length=4)
+    passport_number = models.CharField(max_length=6)
+
+"""
+---
+"""
+
+

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block nav1 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'shop:catalogue' %}">каталог</a>
+{% endblock %}
+{% block nav2 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'shop:home' %}">главная</a>
+{% endblock %}
+{% block nav3 %}
+	{% if request.user.is_authenticated and request.user.first_name %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'shop:sign_out' %}">Выйти</a>
+
+	{% else %}
+		<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'shop:login' %}">аккаунт</a>
+
+	{% endif %}
+
+{% endblock %}
+
+<!-- TODO: отзывы -->
+
+{% block content %}
+{% for comment in comments %}
+    <div class="container col-lg-8 col-md-8 colsm-10 mt-5 pt-3 pb-1" style="background: rgba(255, 255, 255, 0.6);">
+		<h5 class="text-center header_review_name col-lg-8 col-md-8 col-sm-10 p-1 mx-auto">ОТЗЫВ ОТ: <b>{{ comment.name }}</b></h5>
+		<p class="review_text pt-3">
+			{{ comment.text|linebreaks }}
+		</p>
+		<p class="review_date col-12">
+			{{ comment.created }}
+		</p>
+	</div>
+{% empty %}
+    <h5 class="mx-auto text-center mt-5 card_text">Оставьте отзыв первым.</h5>
+{% endfor %}
+	
+	<!-- <div class="container form_for_style" style="text-transform: uppercase;"> -->
+	{% if new_comment %}
+    	<h2>Ваш отзыв был добавлен.</h2>
+	{% else %}
+		<div class="container col-lg-8 col-md-8 colsm-10 mt-5 mb-5 pt-3 pb-1 review_form">
+			<form method="post" class="col-sm-12 col-md-10 col-lg-10 mx-auto text-center">
+				{% csrf_token %}
+				<p class="my-1">{{form | crispy}}</p>
+				<a href="{% url 'shop:review' %}">
+					<input type="submit" value="Отправить" class="review_button">
+				</a>
+			</form>
+		</div>
+	{% endif %}
+	
+</div>
+<p class="text-center color-disable" style="padding: 0; margin: 0;">Чтобы удалить Ваш отзыв, обратитесь в поддержку.</p>
+<p class="text-center color-disable mb-3" style="padding: 0; margin: 0;">Способы обращения в поддержку указаны ниже в "СВЯЗАТЬСЯ СО МНОЙ ДЛЯ ЗАКАЗА МОЖНО С ПОМОЩЬЮ"</p>
+{% include 'footer.html' %}
+{% endblock %}

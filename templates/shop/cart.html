@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+
+{% block nav1 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'catalogue' %}">каталог</a>
+{% endblock %}
+{% block nav2 %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'home' %}">главная</a>
+{% endblock %}
+{% block nav3 %}
+	{% if request.user.is_authenticated and request.user.first_name %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'sign_out' %}">Выйти</a>
+
+	{% else %}
+		<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'login' %}">аккаунт</a>
+
+	{% endif %}
+
+{% endblock %}
+
+{% block content %}
+	{% if not cart_items %}
+    <div class="text-center">
+        <br>
+        <h1 class="text-center product_title">
+            Корзина пустая
+        </h1>
+        <br>
+        <p class="text-center">
+            Нажми <a href="{% url 'catalogue' %}">здесь</a>, чтобы вернуться к товарам!
+        </p>
+    </div>
+
+    {% else %}
+
+    <div class="text-center">
+        <br>
+        <div class="text-center">
+            <h1 class="header_main">Корзина</h1>
+        </div>
+    </div>
+    <div class="row mx-auto">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+            <table class="table cart-table">
+                <thead class="cart-thead">
+                    <tr>
+                        <th colspan="4">
+                            <p class="paragraph_main fs-4">Ваши Товары</p>
+                        </th>
+                    </tr>
+                </thead>
+                {% for cart_item in cart_items %}
+                <tr>
+                    <td>
+                        <a href="{{cart_item.product.get_url}}">
+                            <img src="{{ cart_item.product.image.url }}" alt="{{product.title}}"
+                                 width="100" height="100">
+                        </a>
+                    </td>
+                    <td class="text-left">
+                        Имя товара: {{cart_item.product.name}}
+                        <br>
+                        id товара: {{cart_item.product.id}}
+                        <br>
+                        Цена: {{cart_item.product.price}} руб
+                        <br>
+                        Количество: {{cart_item.quantity}} x {{cart_item.product.price}} руб
+                    </td>
+                    <td>
+                        {{cart_item.sub_total}} руб
+                    </td>
+                    {% if cart_item.quantity < cart_item.product.stock %}
+                    <td>
+                        <a href="{% url 'add_cart' cart_item.product.id %}" style="text-decoration: none;">
+                            <i class="material-icons cart-icon">add_shopping_cart</i>
+                        </a>
+                        <a href="{% url 'cart_remove' cart_item.product.id %}" style="text-decoration: none;">
+                            <i class="material-icons cart-icon">remove_circle_outline</i>
+                        </a>
+                        <a href="{% url 'cart_remove_product' cart_item.product.id %}" style="text-decoration: none;">
+                            <i class="material-icons cart-icon">delete</i>
+                        </a>
+                    </td>
+                    {% else %}
+                    <td>
+                        <a href="{% url 'cart_remove' cart_item.product.id %}" style="text-decoration: none;">
+                            <i class="material-icons cart-icon">remove_circle_outline</i>
+                        </a>
+                        <a href="{% url 'cart_remove_product' cart_item.product.id %}" style="text-decoration: none;">
+                            <i class="material-icons cart-icon">delete</i>
+                        </a>
+                    </td>
+                    {% endif %}
+
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+            <table class="table cart-table">
+                <thead class="cart-thead">
+                    <tr>
+                        <th colspan="4">
+                            <p class="paragraph_main fs-4">Итог</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p class="fs-4">Проверьте корзину перед заказом.</p>
+                        </td>
+                    </tr>
+                   <tr class="text-left">
+                        <td>
+                            Итого: <strong>{{ total }} руб</strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mx-auto pb-5">
+                <!--  -->
+
+            </div>
+            <div class="mx-auto pb-4 pt-2">
+                <a href="{% url 'order' %}" style="text-decoration: none;">
+                    <button type="button" class="btn btn-lg btn-block bg-dark text-white">
+                        Заказать
+                    </button>
+                </a>
+                <a href="{% url 'catalogue' %}" style="text-decoration: none;">
+                    <button type="button" class="btn btn-lg btn-block bg-dark text-white">
+                        Вернуться к покупкам
+                    </button>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+{% endblock %}
+
+<!-- TODO: страница заказов -->

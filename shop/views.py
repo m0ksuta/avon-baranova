@@ -1,40 +1,43 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
-from .forms import LoginForm, SignUpForm, ReviewForm
-from .models import Actual, Category, Paragraph, Product, Review
 from django.contrib.auth.forms import PasswordResetForm
-
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
+from .forms import LoginForm, OrderForm, ReviewForm, SignUpForm
+from .models import (Actual, Cart, CartItem, Category, Order, Paragraph,
+                     Product, Review)
 
 
 def home(request):
     actuals = Actual.objects.all()
     paragraph = Paragraph.objects.all()
-    return render(request, 'home.html', {'actuals': actuals, 'paragraph': paragraph})
+    return render(request, 'shop/home.html', {'actuals': actuals,
+                                              'paragraph': paragraph})
 
 
-def cart(request):
-    return render(request, 'order.html')
+def product_list(request, category_slug=None):
+    category = None
+    categories = Category.objects.all()
+    products = Product.objects.filter(available=True)
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        products = products.filter(category=category)
+    return render(request,
+                  'shop/product/list.html',
+                  {'category': category,
+                   'categories': categories,
+                   'products': products})
 
 
-def catalogue(request, category_slug=None):
-    category_page = None
-    products = None
-    if category_slug is not None:
-        category_page = get_object_or_404(Category, slug=category_slug)
-        products = Product.objects.filter(category=category_page, available=True)
-    else:
-        products = Product.objects.all().filter(available=True)
-    return render(request, 'catalogue.html', {'products': products, 'category': category_page})
-
-
-def product(request, category_slug, product_slug):
-    try:
-        product = Product.objects.get(category__slug=category_slug, slug=product_slug)
-    except Exception as e:
-        raise e
-    return render(request, 'product.html', {'product': product})
+def product_detail(request, id, slug):
+    product = get_object_or_404(Product,
+                                id=id,
+                                slug=slug,
+                                available=True)
+    return render(request,
+                  'shop/product/detail.html',
+                  {'product': product})
 
 
 def sign_up(request):
@@ -56,7 +59,8 @@ def user_login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = authenticate(username=cd['username'], password=cd['password'])
+            user =  authenticate(username=cd['username'],
+                                password=cd['password'])
             if user is not None:
                 if user.is_active:
                     login(request, user)
@@ -82,9 +86,11 @@ def review(request):
         if form.is_valid():
             new_comment = form.save(commit=False)
             new_comment.save()
+            return HttpResponseRedirect(request.path)
     else:
         form = ReviewForm()
-    return render(request, 'review.html', {'form': form, 'comments': comments})
+    return render(request, 'shop/review.html', {'form': form,
+                                           'comments': comments})
 
 
 def password_reset(request):
