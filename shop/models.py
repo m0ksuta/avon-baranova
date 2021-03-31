@@ -33,6 +33,8 @@ class Product(models.Model):
     class Meta:
         ordering = ('name',)
         index_together = (('id', 'slug'),)
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
 
     def get_url(self):
         return reverse('shop:product_detail',

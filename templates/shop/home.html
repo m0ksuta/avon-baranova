@@ -11,11 +11,11 @@
 	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'shop:catalogue' %}">каталог</a>
 {% endblock %}
 {% block nav3 %}
-	{% if request.user.is_authenticated and request.user.first_name %}
-	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'sign_out' %}">Выйти</a>
+	{% if request.user.is_authenticated %}
+	<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'account:logout_then_login' %}">Выйти</a>
 
 	{% else %}
-		<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'shop:login' %}">аккаунт</a>
+		<a class="nav-link text-uppercase fw-bold px-3 navigation_bar_item" href="{% url 'account:login' %}">аккаунт</a>
 
 	{% endif %}
 

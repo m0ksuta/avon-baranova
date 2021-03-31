@@ -1,15 +1,15 @@
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import LoginForm, OrderForm, ReviewForm, SignUpForm
-from .models import (Actual, Cart, CartItem, Category, Order, Paragraph,
+from .forms import ReviewForm
+from .models import (Actual, Category, Paragraph,
                      Product, Review)
 
 
 def home(request):
+    """
+    Функция домашней страницы
+    url имеет вид: protocol://domain_name:port
+    """
     actuals = Actual.objects.all()
     paragraph = Paragraph.objects.all()
     return render(request, 'shop/home.html', {'actuals': actuals,
@@ -17,6 +17,12 @@ def home(request):
 
 
 def product_list(request, category_slug=None):
+    """
+    Функция каталога
+    Принимает параметр category_slug,
+    Он регулирует отображение качества продуктов на странице
+    url имеет вид: protocol://domain_name:port/catalogue/
+    """
     category = None
     categories = Category.objects.all()
     products = Product.objects.filter(available=True)
@@ -31,6 +37,14 @@ def product_list(request, category_slug=None):
 
 
 def product_detail(request, id, slug):
+    """
+    Функция отображения конкретного товара
+    Принимает параметры id и slug
+    id привязан к определенному товару из бд
+    slug аналогично, он устанавливает буквенное значение
+    и сравнивает его с id
+    url имеет вид: protocol://domain_name:port/(переменное значение<id><slug>)
+    """
     product = get_object_or_404(Product,
                                 id=id,
                                 slug=slug,
@@ -40,46 +54,17 @@ def product_detail(request, id, slug):
                   {'product': product})
 
 
-def sign_up(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            signup_user = User.objects.get(username=username)
-        else:
-            return redirect('home')
-    else:
-        form = SignUpForm()
-    return render(request, 'sign_up.html', {'form': form})
-
-
-def user_login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            user =  authenticate(username=cd['username'],
-                                password=cd['password'])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return redirect('catalogue')
-                else:
-                    return HttpResponse('Disabled account')
-            else:
-                return redirect('login')
-    else:
-        form = LoginForm()
-    return render(request, 'login.html', {'form': form})
-
-
-def sign_out_view(request):
-    logout(request)
-    return redirect('login')
-
-
 def review(request):
+    """
+    Функция создания отзывов
+    Берет форму ReviewForm из .forms
+    Передает в неё параметры, вводимые пользователем
+    в поля данной формы
+    В слуае, если отзыв проходит валидацию,
+    то на странице появляется новый отзыв,
+    и пользователь переходит в начало страницы
+    url имеет вид: protocol://domain_name:port/review/
+    """
     comments = Review.objects.all().filter(active=True)
     if request.method == 'POST':
         form = ReviewForm(data=request.POST)
@@ -91,8 +76,3 @@ def review(request):
         form = ReviewForm()
     return render(request, 'shop/review.html', {'form': form,
                                            'comments': comments})
-
-
-def password_reset(request):
-    form = PasswordResetForm()
-    return render(request, 'password_reset.html', {'form': form})

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 from pathlib import Path
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'sendemail.apps.SendemailConfig',
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
+    'account',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -148,3 +150,7 @@ DEFAULT_FROM_EMAIL = 'olhovskii.m@mail.ru'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 CART_SESSION_ID = 'cart'
+
+LOGIN_REDIRECT_URL = reverse_lazy('shop:catalogue')
+LOGIN_URL = reverse_lazy('account:login')
+LOGOUT_URL = reverse_lazy('account:logout')

@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block content %}
-    
+
     <div class="container" style="color: #434343;letter-spacing: 0.04em;">
         <br>
         <h1 class="product_title text-center mt-3 mb-5">
@@ -29,11 +29,11 @@
                     Новый аккаунт
                 </h2>
                 <br>
-                <a href="{% url 'shop:sign_up' %}" class="btn btn-secondary">
+                <a href="" class="btn btn-secondary">
                     Зарегистрироваться
                 </a>
             </div>
-            
+
             <div class="col-12 col-sm-12 col-lg-6 bg-light text-center mx-auto pb-4" style="box-shadow: 0 0 5px rgba(0,0,0,0.5);
    }">
                 <div>
@@ -44,6 +44,7 @@
                     <form method="post" class="login_card">
                         {% csrf_token %}
                         <p>{{ form | crispy }}</p>
+                        <input type="hidden" name="next" value="{{ next }}"/>
                         <button type="submit" class="btn btn-secondary">
                             Войти
                         </button>
